@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <meta charset="utf-8">
+        <title>Piensa en Geomática - Radiación 3D</title>   
+    </head>
+    <body style="overflow-y: scroll">
+
+    <div class="jumbotron" style="text-align: center; margin: 20px; border-radius: 20px;">
+        <h1 style="color: #00bbff">PIENSA EN GEOMÁTICA</h1>
+        <h4>Radiación</h4>
+        <span class="label label-info pull-left" style="position: relative; bottom: 0px;">Desarrollado por Jose Ángel Hermosilla Rodrigo</span>
+        <span class="label label-success pull-right" style="position: relative; bottom: 0px;">Django!</span>
+    </div>
+    {% if error %}
+        <p> {{ error }} </p>
+    {% endif %}
+
+    <!-- Formulario para subir la radiación -->
+    <label class="btn btn-primary" for="form" style="position: fixed; right: 0px; bottom: 0px; border-radius: 0px">
+        <form action="{% url 'rad' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+            <p>
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </p>
+            <p><input class="btn btn-default" type="submit" value="Calcular"/></p>
+        </form>
+    </label>
+
+    <!-- List of uploaded documents -->
+    <div class="thumbnail" style="margin: 20px;">
+        {% if documents %}
+            <ul style="padding-left: 0px; margin-left: 10px;">
+            {% for document in documents %}
+                <pre><code>
+                    <h4>Radiación {{document.nombre_original }}  {{ document.fecha }} </h4>
+                    <li> TXT - <a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+                    <li> ZIP SHP - <a href="{{ document.shp }}">{{ document.shp }}</a></li>
+                </code></pre>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay radiaciones</p>
+        {% endif %}
+    </div>
+
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    </body>
+</html> 
